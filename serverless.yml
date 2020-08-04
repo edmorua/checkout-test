@@ -1,20 +1,20 @@
-service: checkout-backend-v2
-app: checkout-backend-v2
+service: checkout-test-currency
+app: checkout-test-currency
 org: eduardomorua
 
 provider:
   name: aws
   runtime: nodejs12.x
-  project: checkout-backend-v2
+  project: checkout-test-currency
   memorySize: 1024 # optional, in MB, default is 1024
   timeout: 30 # optional, in seconds, default is 6
   stage: ${opt:stage,'dev'}
-  stackName: ${opt:stage,'dev'}-checkout-backend-v2 # Use a custom name for the CloudFormatiosn stack
+  stackName: ${opt:stage,'dev'}-checkout-test-currency # Use a custom name for the CloudFormatiosn stack
   apiGateway:
     restApiId: ${env:API_GATEWAY_ID}
     restApiRootResourceId: ${env:API_GATEWAY_RESOURCE_ID}
   deploymentBucket:
-    name: ${opt:stage,'dev'}-checkout-backend-v2
+    name: ${opt:stage,'dev'}-checkout-test-currency
     serverSideEncryption: AES256
   tracing:
     lambda: true
@@ -58,7 +58,7 @@ custom:
 
   remover:
     buckets:
-      - ${opt:stage,'dev'}-checkout-backend-v2
+      - ${opt:stage,'dev'}-checkout-test-currency
 
   package:
     exclude:
@@ -92,11 +92,11 @@ custom:
       - PAYU_CARD_PAYMENT_URL
 functions:
   checkoutBackendV2:
-    name: ${opt:stage,'dev'}-checkout-backend-v2
+    name: ${opt:stage,'dev'}-checkout-test-currency
     handler: src/handler.checkoutBackendV2
     events:
       - http:
-          path: /checkout
+          path: /checkout-test-currency
           method: post
           cors: true
           integration: lambda-proxy
