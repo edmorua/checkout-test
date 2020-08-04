@@ -4,7 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "dev": "sls offline --stage dev --env development",
+    "deploy_dev": "sls deploy --stage dev  --env development",
+    "qa": "sls offline --stage qa --env qa",
+    "deploy_qa": "sls deploy --stage qa --env qa",
+    "prod": "sls offline --stage prod --env production",
+    "deploy_prod": "sls deploy --stage prod --env production",
+    "clean": "npm cache clean --force"
   },
   "author": "",
   "license": "ISC",
