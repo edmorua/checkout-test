@@ -1,0 +1,23 @@
+{
+  "name": "checkout-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.25.3",
+    "axios": "^0.19.2",
+    "parse": "^2.13.0"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "serverless-deployment-bucket": "^1.1.0",
+    "serverless-dotenv-plugin": "^2.1.1",
+    "serverless-offline": "^6.5.0",
+    "serverless-s3-remover": "^0.6.0"
+  }
+}

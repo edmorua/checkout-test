@@ -1,0 +1,107 @@
+service: checkout-backend-v2
+app: checkout-backend-v2
+org: eduardomorua
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  project: checkout-backend-v2
+  memorySize: 1024 # optional, in MB, default is 1024
+  timeout: 30 # optional, in seconds, default is 6
+  stage: ${opt:stage,'dev'}
+  stackName: ${opt:stage,'dev'}-checkout-backend-v2 # Use a custom name for the CloudFormatiosn stack
+  apiGateway:
+    restApiId: ${env:API_GATEWAY_ID}
+    restApiRootResourceId: ${env:API_GATEWAY_RESOURCE_ID}
+  deploymentBucket:
+    name: ${opt:stage,'dev'}-checkout-backend-v2
+    serverSideEncryption: AES256
+  tracing:
+    lambda: true
+    apiGateway: true
+  environment:
+    APP_ID: ${env:APP_ID}
+    JAVASCRIPT_KEY: ${env:JAVASCRIPT_KEY}
+    MASTER_KEY: ${env:MASTER_KEY}
+    PARSE_URL: ${env:PARSE_URL}
+    API_GATEWAY_ID: ${env:API_GATEWAY_ID}
+    API_GATEWAY_RESOURCE_ID: ${env:API_GATEWAY_RESOURCE_ID}
+    BASIC_AUTH_USERNAME: ${env:BASIC_AUTH_USERNAME}
+    BASIC_AUTH_PASSWORD: ${env:BASIC_AUTH_PASSWORD}
+    Mercado_Pago_OXXO_URL: ${env:Mercado_Pago_OXXO_URL}
+    MERCADOPAGO_PAYMENT_URL: ${env:MERCADOPAGO_PAYMENT_URL}
+    CONEKTA_OXXO_PAYMENT_URL: ${env:CONEKTA_OXXO_PAYMENT_URL}
+    CONEKTA_PAYMENT_URL: ${env:CONEKTA_PAYMENT_URL}
+    STRIPE_PAYMENT_URL: ${env:STRIPE_PAYMENT_URL}
+    BLACKBOX_URL: ${env:BLACKBOX_URL}
+    PAYU_PSE_PAYMENT_URL: ${env:PAYU_PSE_PAYMENT_URL}
+    CONEKTA_SPEI_URL: ${env:CONEKTA_SPEI_URL}
+    BOT_CHANNEL_ERROR_TRANSACTION: ${env:BOT_CHANNEL_ERROR_TRANSACTION}
+    BOT_CHANNEL_URL_MATTERMOST: ${env:BOT_CHANNEL_URL_MATTERMOST}
+    BOT_USERNAME: ${env:BOT_USERNAME}
+    BOT_ICON_URL: ${env:BOT_ICON_URL}
+    PAYU_CARD_PAYMENT_URL: ${env:PAYU_CARD_PAYMENT_URL}
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+  - serverless-deployment-bucket
+  - serverless-s3-remover
+
+custom:
+  webpack:
+    packager: "npm" # Packager that will be used to package your external modules
+    includeModules:
+      packagePath: ./package.json
+
+  region: us-east-1
+  stage-default: "dev"
+
+  remover:
+    buckets:
+      - ${opt:stage,'dev'}-checkout-backend-v2
+
+  package:
+    exclude:
+      - .gitignore
+      - .git/**
+    individually: true
+    excludeDevDependencies: true
+
+  dotenv:
+    include:
+      - APP_ID
+      - JAVASCRIPT_KEY
+      - MASTER_KEY
+      - PARSE_URL
+      - API_GATEWAY_ID
+      - API_GATEWAY_RESOURCE_ID
+      - BASIC_AUTH_USERNAME
+      - BASIC_AUTH_PASSWORD
+      - Mercado_Pago_OXXO_URL
+      - MERCADOPAGO_PAYMENT_URL
+      - CONEKTA_OXXO_PAYMENT_URL
+      - CONEKTA_PAYMENT_URL
+      - STRIPE_PAYMENT_URL
+      - BLACKBOX_URL
+      - PAYU_PSE_PAYMENT_URL
+      - CONEKTA_SPEI_URL
+      - BOT_CHANNEL_ERROR_TRANSACTION
+      - BOT_CHANNEL_URL_MATTERMOST
+      - BOT_USERNAME
+      - BOT_ICON_URL
+      - PAYU_CARD_PAYMENT_URL
+functions:
+  checkoutBackendV2:
+    name: ${opt:stage,'dev'}-checkout-backend-v2
+    handler: src/handler.checkoutBackendV2
+    events:
+      - http:
+          path: /checkout
+          method: post
+          cors: true
+          integration: lambda-proxy
+          response:
+            headers:
+              Access-Control-Allow-Headers: "*"
+              Access-Control-Allow-Origin: "*"
+              Access-Control-Allow-Credentials: false
