@@ -17,7 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "moment": "^2.25.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "parse": "^2.13.0"
   },
   "devDependencies": {
