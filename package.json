@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "moment": "^2.25.3",
+    "moment": "^2.29.2",
     "axios": "^0.19.2",
     "parse": "^2.13.0"
   },
